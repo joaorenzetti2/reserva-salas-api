@@ -5,20 +5,19 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class CreateReservationDto {
   @IsMongoId()
   @IsNotEmpty()
-  roomId: Types.ObjectId;
+  roomId: string;
 
   @IsDate()
   @IsNotEmpty()
-  dataInicio: Date;
+  dataInicio: string;
 
   @IsDate()
   @IsNotEmpty()
-  dataFim: Date;
+  dataFim: string;
 
   @IsString()
   @IsNotEmpty()
@@ -27,7 +26,4 @@ export class CreateReservationDto {
   @IsString()
   @IsOptional()
   motivo?: string;
-
-  @IsOptional()
-  cancelado?: boolean;
 }

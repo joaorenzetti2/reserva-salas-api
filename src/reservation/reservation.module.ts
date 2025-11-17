@@ -3,7 +3,7 @@ import { ReservationService } from './reservation.service';
 import { ReservationController } from './reservation.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Reservation, ReservationSchema } from './schemas/reservation.schema';
-import { Room, RoomSchema } from 'src/room/schemas/room.schema';
+import { RoomModule } from 'src/room/room.module';
 
 @Module({
   imports: [
@@ -12,11 +12,8 @@ import { Room, RoomSchema } from 'src/room/schemas/room.schema';
         name: Reservation.name,
         schema: ReservationSchema,
       },
-      {
-        name: Room.name,
-        schema: RoomSchema,
-      },
     ]),
+    RoomModule,
   ],
   controllers: [ReservationController],
   providers: [ReservationService],

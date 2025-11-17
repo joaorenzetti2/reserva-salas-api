@@ -8,7 +8,7 @@ import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { Reservation, ReservationDocument } from './schemas/reservation.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Room, RoomDocument } from 'src/room/schemas/room.schema';
+import { Room, RoomDocument } from '../room/schemas/room.schema';
 
 @Injectable()
 export class ReservationService {
@@ -69,13 +69,17 @@ export class ReservationService {
   }
 
   async findByRoom(roomId: string) {
+    const roomObjectId = new Types.ObjectId(roomId);
+
     return this.reservationModel
-      .find({ roomId, cancelado: false })
+      .find({ roomId: roomObjectId, cancelado: false })
       .sort({ dataInicio: 1 })
       .exec();
   }
 
   async findByDate(roomId: string, date: string) {
+    const roomObjectId = new Types.ObjectId(roomId);
+
     const selectedDate = new Date(date);
     const proxDia = new Date(selectedDate);
 
@@ -83,7 +87,7 @@ export class ReservationService {
 
     return this.reservationModel
       .find({
-        roomId,
+        roomId: roomObjectId,
         cancelado: false,
         dataInicio: { $gte: selectedDate },
         dataFim: { $lt: proxDia },

@@ -21,9 +21,9 @@ export class ReservationController {
     return this.reservationService.create(createReservationDto);
   }
 
-  @Get('/:id')
-  findOne(@Param('id') id: string) {
-    return this.reservationService.findOne(id);
+  @Get('/room/:roomId/date')
+  findByDate(@Param('roomId') roomId: string, @Query('date') date: string) {
+    return this.reservationService.findByDate(roomId, date);
   }
 
   @Get('/room/:roomId')
@@ -31,9 +31,9 @@ export class ReservationController {
     return this.reservationService.findByRoom(roomId);
   }
 
-  @Get('/room/:roomId/date')
-  findByDate(@Param('roomId') roomId: string, @Query('date') date: string) {
-    return this.reservationService.findByDate(roomId, date);
+  @Get('/:id')
+  findOne(@Param('id') id: string) {
+    return this.reservationService.findOne(id);
   }
 
   @Patch('/cancel/:id')
