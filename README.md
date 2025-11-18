@@ -37,5 +37,16 @@ O objetivo é oferecer uma solução simples e funcional para organizar o uso de
 
 ---
 
-## 📁 Estrutura de Pastas
+## Como Executar o Projeto
+1. Instalar dependências
+npm install
+
+2. Iniciar MongoDB
+
+Certifique-se de que o MongoDB esteja rodando:
+
+mongodb://localhost:27017/reserva_salas
+
+3. Rodar o servidor
+npm run start:dev
 
