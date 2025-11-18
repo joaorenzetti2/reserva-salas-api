@@ -21,78 +21,92 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Reserva de Salas
 
-## Project setup
+Descrição
 
-```bash
-$ npm install
+Instituições, empresas e escolas realizam reuniões, treinamentos e eventos internos diariamente. Esse tipo de atividade exige o uso de salas que precisam ser reservadas com antecedência. O controle manual dessas reservas (via planilhas, e-mails ou comunicação informal) causa conflitos de horários, perda de informação e retrabalho.
+
+Objetivo da solução
+
+Desenvolver um sistema simples e funcional de reserva de salas, permitindo:
+
+- Cadastro das salas disponíveis
+- Registro de reservas com horário de início e fim
+- Verificação automática de disponibilidade
+- Cancelamento de reservas
+- Listagem de reservas por sala e por data
+
+Visão geral do projeto
+
+Esta API é implementada com NestJS e MongoDB (Mongoose). O código está organizado em módulos: `room` (salas) e `reservation` (reservas), cada um com seus DTOs, schemas, serviços e controladores.
+
+Requisitos
+
+- Node.js (recomendado >= 14)
+- npm
+- MongoDB (local ou remoto)
+
+Instalação
+
+1. Clone o repositório:
+
+```powershell
+git clone <repo-url>
+cd "reserva de salas\reserva-salas-api"
 ```
 
-## Compile and run the project
+2. Instale dependências:
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```powershell
+npm install
 ```
 
-## Run tests
+Configuração
 
-```bash
-# unit tests
-$ npm run test
+- A conexão padrão do MongoDB está configurada em `src/app.module.ts` como `mongodb://localhost:27017/reserva_salas`.
+- Para usar outra URI, altere `src/app.module.ts` ou implemente leitura de `process.env.MONGODB_URI`.
 
-# e2e tests
-$ npm run test:e2e
+Execução
 
-# test coverage
-$ npm run test:cov
+- Desenvolvimento (com reload):
+
+```powershell
+npm run start:dev
 ```
 
-## Deployment
+- Produção:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```powershell
+npm run build
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Principais endpoints
 
-## Resources
+- `POST /reservation` — cria uma reserva. Campos: `roomId`, `dataInicio` (ISO string), `dataFim` (ISO string), `requesterName`, `motivo` (opcional).
+- `GET /reservation/room/:roomId` — lista reservas ativas da sala.
+- `GET /reservation/room/:roomId/date?date=YYYY-MM-DD` — lista reservas da sala para a data informada.
+- `PATCH /reservation/cancel/:id` — cancela reserva.
+- Endpoints para gerenciar salas estão disponíveis no módulo `room`.
 
-Check out a few resources that may come in handy when working with NestJS:
+Testes
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- Unitários: `npm run test`
+- E2E: `npm run test:e2e`
 
-## Support
+Observações
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Recomenda-se fazer backup do banco antes de executar migrações ou scripts de normalização.
+- Considere aprimorar validações de DTOs e padronizar o armazenamento de `roomId` como `ObjectId`.
 
-## Stay in touch
+Contribuição
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Faça fork, crie uma branch e abra um pull request com as mudanças.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Se quiser, eu posso gerar a mensagem de commit sugerida para essa alteração do README.
+
+
