@@ -25,10 +25,16 @@ export class ReservationService {
     dataInicio: Date,
     dataFim: Date,
   ): Promise<boolean> {
+    const orRoomId: any[] = [];
+    if (Types.ObjectId.isValid(String(roomId))) {
+      orRoomId.push({ roomId: new Types.ObjectId(String(roomId)) });
+    }
+    orRoomId.push({ roomId: String(roomId) });
+
     const conflict = await this.reservationModel.findOne({
-      roomId,
+      $or: orRoomId,
       cancelado: false,
-      dataInicio: { $lt: dataFim }, //
+      dataInicio: { $lt: dataFim },
       dataFim: { $gt: dataInicio },
     });
 
@@ -63,36 +69,46 @@ export class ReservationService {
       ...createReservationDto,
       dataInicio: inicio,
       dataFim: fim,
+      cancelado: false,
     });
 
     return created.save();
   }
 
   async findByRoom(roomId: string) {
-    const roomObjectId = new Types.ObjectId(roomId);
+    const orRoomId: any[] = [];
+    if (Types.ObjectId.isValid(roomId)) {
+      orRoomId.push({ roomId: new Types.ObjectId(roomId) });
+    }
+    orRoomId.push({ roomId });
 
     return this.reservationModel
-      .find({ roomId: roomObjectId, cancelado: false })
+      .find({ $or: orRoomId, cancelado: false })
       .sort({ dataInicio: 1 })
+      .populate('roomId')
       .exec();
   }
 
   async findByDate(roomId: string, date: string) {
-    const roomObjectId = new Types.ObjectId(roomId);
+    const orRoomId: any[] = [];
+    if (Types.ObjectId.isValid(roomId)) {
+      orRoomId.push({ roomId: new Types.ObjectId(roomId) });
+    }
+    orRoomId.push({ roomId });
 
     const selectedDate = new Date(date);
     const proxDia = new Date(selectedDate);
-
     proxDia.setDate(selectedDate.getDate() + 1);
 
     return this.reservationModel
       .find({
-        roomId: roomObjectId,
+        $or: orRoomId,
         cancelado: false,
         dataInicio: { $gte: selectedDate },
         dataFim: { $lt: proxDia },
       })
       .sort({ dataInicio: 1 })
+      .populate('roomId')
       .exec();
   }
 

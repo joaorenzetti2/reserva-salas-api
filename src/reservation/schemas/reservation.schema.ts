@@ -20,7 +20,7 @@ export class Reservation {
   @Prop()
   motivo: string;
 
-  @Prop()
+  @Prop({ default: false })
   cancelado: boolean;
 }
 
